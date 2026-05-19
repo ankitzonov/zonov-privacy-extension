@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — zonov.ai</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.75;
+      padding: 48px 24px 72px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #1255a4, #1a73e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+    .updated { font-size: 12px; color: #94a3b8; margin-bottom: 32px; }
+    h1 { font-size: 28px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    h2 { font-size: 17px; font-weight: 700; color: #1255a4; margin: 36px 0 10px;
+         padding-bottom: 6px; border-bottom: 2px solid #e0edff; }
+    h3 { font-size: 14px; font-weight: 700; color: #1e293b; margin: 16px 0 6px; }
+    p  { font-size: 14px; color: #475569; margin-bottom: 10px; }
+    ul { padding-left: 22px; margin-bottom: 12px; }
+    li { font-size: 14px; color: #475569; margin-bottom: 6px; }
+    a  { color: #1a73e8; }
+    .notice {
+      background: #fff7ed;
+      border-left: 4px solid #f97316;
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #7c2d12;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    .notice strong { color: #9a3412; }
+    .good {
+      background: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #14532d;
+      margin: 20px 0;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+    th { background: #eff6ff; color: #1e40af; font-weight: 700;
+         padding: 10px 14px; text-align: left; border: 1px solid #bfdbfe; }
+    td { padding: 9px 14px; border: 1px solid #e2e8f0; color: #475569; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8faff; }
+    hr { border: none; border-top: 1px solid #e2e8f0; margin: 36px 0; }
+    code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+           font-size: 12px; font-family: monospace; color: #0f172a; }
+  </style>
+</head>
+<body>
+  <div class="brand">zonov.ai</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: May 2026 &nbsp;|&nbsp; Effective: May 2026</p>
+
+  <p>This Privacy Policy explains how the <strong>zonov.ai Chrome Extension</strong> ("Extension", "we", "our") collects, uses, stores, and shares information when hospital staff ("User", "you") use the Extension. Please read this policy carefully before using the Extension.</p>
+
+  <div class="notice">
+    <strong>Important:</strong> This Extension processes sensitive personal and biometric data including Aadhaar card details and facial recognition descriptors. All data handling is described transparently below. By using this Extension, you confirm you are authorised hospital staff and that patients have given appropriate consent for their data to be processed.
+  </div>
+
+  <!-- ── Section 1 ─────────────────────────────────────────────────────────── -->
+  <h2>1. What the Extension Does</h2>
+  <p>zonov.ai is a hospital productivity tool designed exclusively for authorised medical registration staff. It helps fill patient registration forms in Hospital Information Management Systems (HIMS) using three AI-powered features:</p>
+  <ul>
+    <li><strong>Aadhaar / ID Card Scan</strong> — Camera or gallery image → OCR extracts patient data → auto-fills the HIMS form</li>
+    <li><strong>AI Voice Fill</strong> — Microphone recording → speech-to-text → fills empty form fields</li>
+    <li><strong>Return Patient Face Match</strong> — Camera captures face → matches against stored face descriptors → retrieves patient record and auto-fills form</li>
+  </ul>
+
+  <!-- ── Section 2 ─────────────────────────────────────────────────────────── -->
+  <h2>2. Data We Collect and Why</h2>
+
+  <h3>2a. Patient Identity Data (from Aadhaar / ID Card Scan)</h3>
+  <p>When a staff member scans an ID card, the following patient data is extracted and stored in our cloud database:</p>
+  <ul>
+    <li>Full name, date of birth, gender</li>
+    <li>Aadhaar number (12-digit UID)</li>
+    <li>Father's name / guardian name</li>
+    <li>Residential address, PIN code, district, state</li>
+    <li>Mobile number, email address (if present on card)</li>
+  </ul>
+  <p><strong>Purpose:</strong> To populate the HIMS registration form and to enable returning patient lookup so the same patient does not need to be re-registered on future visits.</p>
+  <p><strong>Storage:</strong> Stored in a private Supabase PostgreSQL database (<code>nnzozslhgdmgnfhtadoq.supabase.co</code>) scoped to your hospital's ID. Each hospital's data is logically isolated by a <code>hospital_id</code> column with Row-Level Security (RLS) policies enforced at the database level.</p>
+
+  <h3>2b. Facial Biometric Data (Face Descriptors)</h3>
+  <p>If a staff member registers a patient's face for future recognition, the Extension captures a camera frame and generates a <strong>128-dimensional numerical face descriptor</strong> (a mathematical representation, not a photograph) using the open-source face-api.js library running entirely on-device (CPU, no GPU).</p>
+  <p><strong>What is stored:</strong> Only the numerical descriptor array — not the photograph itself. The raw camera image is never uploaded or stored.</p>
+  <p><strong>Storage:</strong> Descriptor stored in the Supabase database linked to the patient record. Used only to match returning patients; never used for any other purpose.</p>
+  <div class="notice">
+    <strong>Biometric Data Notice:</strong> Facial descriptors constitute biometric data under applicable data protection laws (including India's DPDP Act 2023 and GDPR). Hospital operators are responsible for obtaining valid patient consent before enrolling a patient's face in the system. zonov.ai provides the technical infrastructure only.
+  </div>
+
+  <h3>2c. ID Card Images (sent for OCR processing)</h3>
+  <p>When a card is scanned, the captured image is sent to <strong>Groq API</strong> (a third-party AI service) for text extraction. The image is sent as a one-time API request and is <strong>not stored</strong> by zonov.ai. Groq's data handling is governed by <a href="https://groq.com/privacy-policy/" target="_blank">Groq's Privacy Policy</a>.</p>
+
+  <h3>2d. Voice Recordings (AI Voice Fill)</h3>
+  <p>When Voice Fill is activated, microphone audio is captured and sent to <strong>Groq API</strong> for speech-to-text transcription. The transcript is used to fill form fields and is not stored. Audio recordings are not retained by zonov.ai after transcription.</p>
+
+  <h3>2e. Staff Authentication Data</h3>
+  <p>Staff log in using email and password via <strong>Supabase Authentication</strong>. Passwords are never stored by the Extension — only the encrypted session token is stored locally in <code>chrome.storage.local</code> on the staff member's device.</p>
+
+  <h3>2f. Form Field Memory (Local Only)</h3>
+  <p>The Extension learns which form labels correspond to which data fields (e.g., "Patient Name" → name field) to improve accuracy over time. These mappings are stored locally in <code>chrome.storage.local</code> and contain only label strings — never patient data. Cleared on uninstall.</p>
+
+  <h3>2g. Hospital UHID / Registration Numbers</h3>
+  <p>After a patient is registered in HIMS, staff may save the hospital-assigned UHID/Reg No to link it to the patient record in Supabase. This is used for future record lookup.</p>
+
+  <!-- ── Section 3 ─────────────────────────────────────────────────────────── -->
+  <h2>3. Data Storage Summary</h2>
+  <table>
+    <thead>
+      <tr><th>Data Type</th><th>Where Stored</th><th>Who Can Access</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Patient identity (Aadhaar data)</td><td>Supabase cloud DB (India/Singapore region)</td><td>Hospital staff at same hospital_id</td></tr>
+      <tr><td>Face biometric descriptor</td><td>Supabase cloud DB</td><td>Hospital staff at same hospital_id</td></tr>
+      <tr><td>Staff session token</td><td>Device only (chrome.storage.local)</td><td>Only the logged-in staff member</td></tr>
+      <tr><td>Form label memory</td><td>Device only (chrome.storage.local)</td><td>Only the device user</td></tr>
+      <tr><td>ID card images</td><td>Not stored — sent to Groq API in transit only</td><td>Groq API (one-time request)</td></tr>
+      <tr><td>Voice recordings</td><td>Not stored — sent to Groq API in transit only</td><td>Groq API (one-time request)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Section 4 ─────────────────────────────────────────────────────────── -->
+  <h2>4. Third-Party Services</h2>
+  <ul>
+    <li>
+      <strong>Groq (api.groq.com)</strong> — Receives ID card images (for OCR) and voice transcripts (for speech-to-text). Data handled per <a href="https://groq.com/privacy-policy/" target="_blank">Groq's Privacy Policy</a>. No data is stored by Groq beyond their standard API processing terms.
+    </li>
+    <li>
+      <strong>Supabase (supabase.com)</strong> — Cloud PostgreSQL database used to store patient records and face descriptors. Data handled per <a href="https://supabase.com/privacy" target="_blank">Supabase's Privacy Policy</a>. Data is stored in the project region and protected by Row-Level Security.
+    </li>
+  </ul>
+  <p>The Extension does <strong>not</strong> share data with any advertising networks, analytics platforms, or any third party beyond those listed above.</p>
+
+  <!-- ── Section 5 ─────────────────────────────────────────────────────────── -->
+  <h2>5. Permissions Justification</h2>
+  <table>
+    <thead>
+      <tr><th>Permission</th><th>Why It Is Required</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>storage</code></td>
+        <td>Stores staff session token, per-site form field memory, patient data cache for offline fallback, and face descriptor cache. All stored locally on the device.</td>
+      </tr>
+      <tr>
+        <td><code>scripting</code></td>
+        <td>Dynamically injects the form-fill content script into HIMS pages when the user initiates a scan or voice fill. Required because HIMS pages vary by hospital and cannot be predicted at install time.</td>
+      </tr>
+      <tr>
+        <td><code>offscreen</code></td>
+        <td>Chrome MV3 requires an Offscreen Document to access the Web Audio API and run TensorFlow.js (face-api) in the background. Without this permission the face recognition model cannot operate in a service worker context.</td>
+      </tr>
+      <tr>
+        <td>Host: <code>*.supabase.co</code></td>
+        <td>Required to read and write patient records and face descriptors to the hospital's private Supabase database.</td>
+      </tr>
+      <tr>
+        <td>Host: <code>api.groq.com</code></td>
+        <td>Required to send ID card images for OCR (Aadhaar text extraction) and voice audio for speech-to-text transcription.</td>
+      </tr>
+      <tr>
+        <td>Host: IP addresses<br/><small>(13.211.x.x, 13.239.x.x, 47.29.x.x, 122.185.x.x)</small></td>
+        <td>These are the private IP addresses of partner hospital HIMS servers. Hospital systems run on internal/private infrastructure without public domain names. Access is required to inject the form-fill content script and communicate with the HIMS registration page.</td>
+      </tr>
+      <tr>
+        <td>Host: <code>https://zonovai.vercel.app/*</code></td>
+        <td>Required to inject the content script on the https://zonovai.vercel.app/* dashboard and allow staff to access their patient records from the web portal.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Section 6 ─────────────────────────────────────────────────────────── -->
+  <h2>6. Data Retention</h2>
+  <ul>
+    <li><strong>Patient identity records</strong> — retained in Supabase until the hospital administrator deletes them via the dashboard.</li>
+    <li><strong>Face biometric descriptors</strong> — retained in Supabase until deleted by hospital administrator.</li>
+    <li><strong>Voice recordings</strong> — not retained; discarded after transcription.</li>
+    <li><strong>ID card images</strong> — not retained; discarded after OCR response.</li>
+    <li><strong>Local storage</strong> — cleared when the Extension is uninstalled.</li>
+  </ul>
+
+  <!-- ── Section 7 ─────────────────────────────────────────────────────────── -->
+  <h2>7. Data Subject Rights</h2>
+  <p>Patients whose data is processed through this Extension have rights under applicable law (DPDP Act 2023, GDPR where applicable), including the right to access, correct, or delete their data. These requests should be directed to the hospital where the data was registered. Hospital administrators can delete patient records via the zonov.ai dashboard or by contacting <a href="mailto:arvindt@zonov.ai">arvind@zonov.ai</a>.</p>
+
+  <!-- ── Section 8 ─────────────────────────────────────────────────────────── -->
+  <h2>8. Security</h2>
+  <div class="good">
+    All communication with Supabase and Groq uses HTTPS/TLS encryption. The Supabase database enforces Row-Level Security (RLS) so each hospital's data is isolated — staff at Hospital A cannot access Hospital B's patient records. Session tokens are stored locally and never transmitted in plaintext.
+  </div>
+
+  <!-- ── Section 9 ─────────────────────────────────────────────────────────── -->
+  <h2>9. Intended Audience</h2>
+  <p>This Extension is intended <strong>exclusively</strong> for use by authorised hospital staff and medical professionals. It is not directed at the general public or children. Access is controlled by hospital-issued credentials managed through Supabase Authentication.</p>
+
+  <!-- ── Section 10 ────────────────────────────────────────────────────────── -->
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy as features change. The "Last updated" date at the top will reflect any changes. Continued use of the Extension after changes constitutes acceptance of the revised policy.</p>
+
+  <hr />
+  <p style="font-size:13px; color:#94a3b8;">
+    <strong>Developer:</strong> zonov.ai &nbsp;|&nbsp;
+    <strong>Contact:</strong> <a href="mailto:arvind@zonov.ai">arvind@zonov.ai</a> &nbsp;|&nbsp;
+    <strong>Website:</strong> <a href="https://zonovai.vercel.app/" target="_blank">https://zonovai.vercel.app/</a>
+  </p>
+</body>
+</html>
