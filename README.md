@@ -1,1 +1,0 @@
-# zonov-privacy-extension
